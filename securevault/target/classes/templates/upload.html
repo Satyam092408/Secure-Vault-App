@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Vault - Upload</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="container upload-container">
+    <header>
+        <h1><i class="fas fa-lock"></i> Secure Vault</h1>
+        <div class="user-info">
+            <span>Welcome, <span th:text="${#authentication.name}"></span>!</span>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-secondary">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </form>
+        </div>
+    </header>
+
+    <div class="upload-section">
+        <h2><i class="fas fa-cloud-upload-alt"></i> Upload New Document</h2>
+        <form th:action="@{/documents/upload}" method="post" enctype="multipart/form-data" class="file-upload">
+            <label class="file-upload-label">
+                <i class="fas fa-file-upload"></i>
+                <span>Choose a file or drag it here</span>
+                <span class="file-name" id="file-name">No file selected</span>
+                <input type="file" name="file" id="file-upload" required>
+            </label>
+            <textarea name="description" placeholder="Document description..." required></textarea>
+            <button type="submit" class="btn">
+                <i class="fas fa-upload"></i> Upload Document
+            </button>
+        </form>
+    </div>
+
+    <a th:href="@{/documents}" class="btn view-documents-btn">
+        <i class="fas fa-folder-open"></i> View All Documents
+    </a>
+</div>
+
+<footer>
+    <p>Made with ❤️ by Satyam</p>
+    <div class="social-links">
+        <a href="https://github.com/Satyam092408" class="social-link" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/satyam-vishwakarma-9407a0361/" class="social-link" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="https://www.instagram.com/satyam._.09" class="social-link" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </div>
+</footer>
+
+<script>
+    document.getElementById('file-upload').addEventListener('change', function(e) {
+        const fileName = document.getElementById('file-name');
+        if (this.files.length > 0) {
+            fileName.textContent = this.files[0].name;
+        } else {
+            fileName.textContent = 'No file selected';
+        }
+    });
+</script>
+</body>
+</html>

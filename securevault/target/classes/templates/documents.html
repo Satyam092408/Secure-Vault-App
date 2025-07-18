@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Vault - Documents</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Secure Vault</h1>
+        <div class="user-info">
+            <span>Welcome, <span th:text="${#authentication.name}"></span>!</span>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </header>
+
+    <div class="search-section">
+        <h2>Search Documents</h2>
+        <form th:action="@{/documents/search}" method="get" class="search-box">
+            <input type="text" name="query" placeholder="Search documents..." th:value="${searchQuery ?: ''}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="upload-section">
+        <h2>Upload New Document</h2>
+        <form th:action="@{/documents/upload}" method="post" enctype="multipart/form-data" class="file-upload">
+            <label class="file-upload-label">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 2rem;"></i>
+                <span>Choose a file or drag it here</span>
+                <span class="file-name" id="file-name">No file selected</span>
+                <input type="file" name="file" id="file-upload" required>
+            </label>
+            <textarea name="description" placeholder="Document description..." required></textarea>
+            <button type="submit" class="upload-btn">Upload Document</button>
+        </form>
+    </div>
+
+    <div class="filter-options">
+        <a th:href="@{/documents/filter(type='image')}" class="filter-btn" th:classappend="${filterType == 'image'} ? 'active' : ''">
+            Images
+        </a>
+        <a th:href="@{/documents/filter(type='text')}" class="filter-btn" th:classappend="${filterType == 'text'} ? 'active' : ''">
+            Text
+        </a>
+        <a th:href="@{/documents/filter(type='pdf')}" class="filter-btn" th:classappend="${filterType == 'pdf'} ? 'active' : ''">
+            PDF
+        </a>
+        <a th:href="@{/documents}" class="filter-btn" th:classappend="${filterType == null} ? 'active' : ''">
+            All
+        </a>
+    </div>
+
+    <div class="documents-list">
+        <h2>Your Documents</h2>
+
+        <div th:if="${documents.empty}">
+            <p>No documents found. Upload your first document!</p>
+        </div>
+
+        <div th:each="doc : ${documents}">
+            <div class="document-item">
+                <h3 th:text="${doc.name}"></h3>
+                <p class="document-description" th:text="${doc.description}"></p>
+                <div class="document-meta">
+                    <span th:text="${doc.fileType}"></span>
+                    <span th:text="${#numbers.formatDecimal(doc.fileSize/1024, 1, 2)} + ' KB'"></span>
+                </div>
+                <div class="document-meta">
+                    <span th:text="${#temporals.format(doc.uploadDate, 'yyyy-MM-dd')}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Update file name when file is selected
+    document.getElementById('file-upload').addEventListener('change', function(e) {
+        const fileName = document.getElementById('file-name');
+        if (this.files.length > 0) {
+            fileName.textContent = this.files[0].name;
+        } else {
+            fileName.textContent = 'No file selected';
+        }
+    });
+</script>
+</body>
+</html>

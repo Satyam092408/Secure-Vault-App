@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" data-thyme>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Vault - Login</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="theme-toggle">
+    <button id="theme-toggle" class="theme-toggle-btn">🌙</button>
+</div>
+
+<div class="form-container">
+    <h1 style="text-align: center; margin-bottom: 30px;">
+        <i class="fas fa-lock"></i> Secure Vault
+    </h1>
+
+    <form th:action="@{/auth/login}" method="post">
+        <div class="form-group">
+            <label for="username"><i class="fas fa-user"></i> Username</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password"><i class="fas fa-key"></i> Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-group remember-me">
+            <input type="checkbox" id="remember-me" name="remember-me">
+            <label for="remember-me">Remember me</label>
+        </div>
+
+        <div th:if="${param.error}" class="form-group" style="color: var(--error-color); text-align: center;">
+            <i class="fas fa-exclamation-circle"></i> Invalid username or password
+        </div>
+
+        <button type="submit" class="btn">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+    </form>
+
+    <p style="text-align: center; margin-top: 20px;">
+        Don't have an account? <a th:href="@{/auth/register}">Register here</a>
+    </p>
+</div>
+
+<footer>
+    <p>Made with ❤️ by Satyam</p>
+    <div class="social-links">
+        <a href="https://github.com/Satyam092408" class="social-link" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/satyam-vishwakarma-9407a0361/" class="social-link" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="https://www.instagram.com/satyam._.09" class="social-link" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </div>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
